@@ -1,0 +1,129 @@
+/* Admin.css */
+.admin-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'Pretendard', sans-serif;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.reset-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.control-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.input-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.input-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.count-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.btn-ball { background: #e3f2fd; border: 1px solid #90caf9; height: 60px; font-size: 1.1rem; }
+.btn-strike { background: #fffde7; border: 1px solid #fff59d; height: 60px; font-size: 1.1rem; }
+.btn-out { background: #ffebee; border: 1px solid #ef9a9a; height: 60px; font-size: 1.1rem; }
+
+.base-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.base-btn {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  flex: 1;
+}
+
+.base-btn.active { background: #ffeb3b; font-weight: bold; }
+
+
+/* 수동 조절 박스 레이아웃 */
+.manual-adjust-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.btn-step {
+  width: 40px;
+  height: 60px;
+  font-size: 20px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.btn-step:hover { background: #ccc; }
+
+.display-num {
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* 카운트별 색상 텍스트 (선택 사항) */
+.display-num.balls { color: #2ecc71; }
+.display-num.strikes { color: #f1c40f; }
+.display-num.outs { color: #e74c3c; }
+
+/* 최종 적용 버튼 */
+.btn-apply-all {
+  width: 100%;
+  margin-top: 20px;
+  height: 50px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #1a252f;
+}
+
+.btn-apply-all:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}

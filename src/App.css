@@ -1,38 +1,44 @@
+/* App.css */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #1a1a1a;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
+  width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+/* 상단 모니터 영역 */
+.monitor-section {
+flex: 0 0 auto;           /* 높이가 컨텐츠에 따라 유연하게 조절되도록 설정 */
+  min-height: 400px;        /* 최소 높이를 충분히 주어 위아래 여백 확보 */
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;      /* 가로 중앙 정렬 */
+  justify-content: center;  /* 세로 중앙 정렬 */
+  padding: 60px 0;          /* 위아래에 확실한 간격(여백) 부여 */
+  border-bottom: 5px solid #333;
+  overflow: visible;        /* 그림자나 광채 효과가 잘리지 않게 함 */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* 하단 컨트롤 영역 */
+.control-section {
+  flex: 1;
+  background-color: #f0f2f5;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.section-label {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
