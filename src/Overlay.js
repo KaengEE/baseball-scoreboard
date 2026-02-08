@@ -36,8 +36,6 @@ function Overlay() {
         {/* 1. 왼쪽: 홈팀 라인업 */}
         <div className="lineup-side left">
           <div className="lineup-header">
-            {/* 저장된 로고가 있으면 표시 */}
-            {game.homeLogo && <img src={game.homeLogo} className="overlay-mini-logo" alt="L" />}
             {game.homeName || "HOME"}
           </div>
           <div className="player-list">

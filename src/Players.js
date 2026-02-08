@@ -6,6 +6,23 @@ import { arrayMove, SortableContext, verticalListSortingStrategy, useSortable } 
 import { CSS } from '@dnd-kit/utilities';
 import './Players.css';
 
+/*
+1.볼, 스크라이크, 아웃 카운트 잘못 눌렀을 때 되돌리기 버튼 추가하기(취소버튼)
+
+2.선수 표시는 순서대로
+1~9 가 있고
+순서가 변경될 수 있어서 드래그 형식으로
+순서 이동 가능하게 해야함
+
+3. overlay 화면에 선수 리스트 보여주기(실시간)
+
+4.선수 리스트에서 타자, 투수 선택버튼 추가하기
+
+5. overlay 화면 디자인
+
+*/
+
+
 // --- 1. 개별 선수 셀 컴포넌트 ---
 function SortablePlayerRow({ id, player, index, onRemove }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
