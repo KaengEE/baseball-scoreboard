@@ -113,3 +113,44 @@
 .ball.active { background-color: #39ff14; box-shadow: 0 0 10px #39ff14; }
 .strike.active { background-color: #f3f315; box-shadow: 0 0 10px #f3f315; }
 .out.active { background-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+
+
+/* 로고 */
+.team-info-box {
+  display: flex;
+  align-items: center;  /* 세로 중앙 정렬 */
+  gap: 6px;             /* 로고와 이름 사이 간격 */
+  flex: 1;              /* 공간을 꽉 채우도록 설정 */
+}
+.score-logo {
+  width: 20px;          /* 로고 너비 축소 */
+  height: 20px;         /* 로고 높이 축소 */
+  object-fit: contain;  /* 이미지 비율 유지 */
+  display: block;       /* 여백 방지 */
+}
+
+/* 팀 이름 텍스트 */
+.team-name-text {
+  font-size: 16px;      /* 필요에 따라 조절 */
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;  /* 이름이 길어도 줄바꿈 방지 */
+}
+
+/* 스코어보드 각 줄(Row) 설정 */
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 팀 정보는 왼쪽, 점수는 오른쪽 */
+  padding: 4px 10px;
+  width: 100%;
+}
+
+/* 점수 숫자 */
+.score-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  min-width: 30px;
+  text-align: right;
+}
