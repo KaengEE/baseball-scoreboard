@@ -60,9 +60,9 @@ function SortablePlayerRow({ id, playerObj, index, onRemove, onRoleChange, isCur
 
 // --- 2. 메인 Players 컴포넌트 ---
 function Players({ game, allTeams, updateDB }) {
-  //const [teamInputs, setTeamInputs] = useState({ awayName: "", homeName: "" });
+  const [teamInputs, setTeamInputs] = useState({ awayName: "", homeName: "" });
   const [newPlayerInputs, setNewPlayerInputs] = useState({ away: "", home: "" });
-  //const [localLogos, setLocalLogos] = useState([]);
+  const [localLogos, setLocalLogos] = useState([]);
 
   const sensors = useSensors(useSensor(PointerSensor, {
     activationConstraint: { distance: 5 }
