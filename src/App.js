@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Admin from './Admin';
 import Overlay from './Overlay';
 import './App.css';
@@ -11,8 +11,6 @@ function App() {
       <Router basename={process.env.PUBLIC_URL}> 
         <div className="App">
           <Routes>
-            <Route path="/overlay" element={<Overlay />} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/" element={
               <div className="dashboard-container">
                 <div className="monitor-section">
@@ -25,6 +23,9 @@ function App() {
                 </div>
               </div>
             } />
+            <Route path="/overlay" element={<Overlay />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </div>
       </Router>
