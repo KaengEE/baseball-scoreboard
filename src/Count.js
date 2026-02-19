@@ -8,18 +8,18 @@ function Count({ game, updateDB, handleUndo }) {
   });
 
   // 2. 팀 로고 관리를 위한 로컬 상태 추가
-const logoFiles = [
-    { name: '기아', path: '/logos/kia.png' },
-    { name: '롯데', path: '/logos/lotte.png' },
-    { name: '삼성', path: '/logos/samsung.png' },
-    { name: '두산', path: '/logos/doosan.png' },
-    { name: 'LG', path: '/logos/lg.png' },
-    { name: 'SSG', path: '/logos/ssg.png' },
-    { name: 'NC', path: '/logos/nc.png' },
-    { name: '키움', path: '/logos/kiwoom.png' },
-    { name: 'KT', path: '/logos/kt.png' },
-    { name: '한화', path: '/logos/hanhwa.png' }
-  ];
+  const logoFiles = [
+      { name: '기아', path: process.env.PUBLIC_URL + '/logos/kia.png' },
+      { name: '롯데', path: process.env.PUBLIC_URL + '/logos/lotte.png' },
+      { name: '삼성', path: process.env.PUBLIC_URL + '/logos/samsung.png' },
+      { name: '두산', path: process.env.PUBLIC_URL + '/logos/doosan.png' },
+      { name: 'LG', path: process.env.PUBLIC_URL + '/logos/lg.png' },
+      { name: 'SSG', path: process.env.PUBLIC_URL + '/logos/ssg.png' },
+      { name: 'NC', path: process.env.PUBLIC_URL + '/logos/nc.png' },
+      { name: '키움', path: process.env.PUBLIC_URL + '/logos/kiwoom.png' },
+      { name: 'KT', path: process.env.PUBLIC_URL + '/logos/kt.png' },
+      { name: '한화', path: process.env.PUBLIC_URL + '/logos/hanhwa.png' }
+    ];
 
   // DB 데이터 변경 시 로컬 상태 동기화
   useEffect(() => {
