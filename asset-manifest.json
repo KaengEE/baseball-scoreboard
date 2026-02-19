@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/baseball-scoreboard/static/css/main.db278b31.css",
+    "main.js": "/baseball-scoreboard/static/js/main.4284615b.js",
+    "index.html": "/baseball-scoreboard/index.html",
+    "main.db278b31.css.map": "/baseball-scoreboard/static/css/main.db278b31.css.map",
+    "main.4284615b.js.map": "/baseball-scoreboard/static/js/main.4284615b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.db278b31.css",
+    "static/js/main.4284615b.js"
+  ]
+}
