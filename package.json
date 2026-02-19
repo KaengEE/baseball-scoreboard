@@ -2,7 +2,7 @@
   "name": "baseball-scoreboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://KaengEE.github.io/baseball-scoreboard",
+  "homepage": "https://kaengee.github.io/baseball-scoreboard",
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
