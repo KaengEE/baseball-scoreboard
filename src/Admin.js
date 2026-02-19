@@ -10,14 +10,19 @@ function Admin() {
   const [allTeams, setAllTeams] = useState([]);
   // 단일 기록(prevGameData) 대신 배열(historyStack)을 사용하여 여러 번 되돌리기 구현
   const [historyStack, setHistoryStack] = useState([]);
+  // 공지사항
+  const [noticeInput, setNoticeInput] = useState("");
 
-  useEffect(() => {
-    // 1. 경기 상황 실시간 구독
+useEffect(() => {
     const unsubGame = onSnapshot(doc(db, "baseball", "current"), (snapshot) => {
-      if (snapshot.exists()) setGame(snapshot.data());
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        setGame(data);
+        // 2. DB에서 공지사항을 가져와 입력창 초기값 설정
+        setNoticeInput(data.notice || "");
+      }
     });
 
-    // 2. 모든 팀 데이터 실시간 구독 (순서 변경 시 화면 즉시 반영을 위해 필수)
     const unsubTeams = onSnapshot(collection(db, "teams"), (snapshot) => {
       const teamsArray = snapshot.docs.map(doc => ({ 
         id: doc.id, 
@@ -81,10 +86,31 @@ function Admin() {
       <div className="header">
         <h2>⚾ 경기 관리자 모드</h2>
         <div className="header-btns">
-          <button onClick={handleUndo} className="undo-btn">↩ 되돌리기 ({historyStack.length})</button>
+          {/* <button onClick={handleUndo} className="undo-btn">↩ 되돌리기 ({historyStack.length})</button> */}
           <button onClick={resetGame} className="reset-btn">경기 초기화</button>
         </div>
       </div>
+
+      {/* --- 공지사항 관리 --- */}
+      <section className="control-section notice-section">
+        <h5 style={{marginBottom: '10px', color: '#666'}}>📢 공지사항</h5>
+        <div className="notice-input-row">
+          <input 
+            type="text" 
+            className="notice-input"
+            placeholder="공지사항 내용을 입력하세요"
+            value={noticeInput}
+            onChange={(e) => setNoticeInput(e.target.value)}
+          />
+          <button 
+            className="notice-apply-btn"
+            onClick={() => updateDB({ notice: noticeInput })}
+          >
+            적용
+          </button>
+        </div>
+      </section>
+
 
       {/* 실시간 카운트 및 이닝 관리 */}
       <Count 
@@ -115,7 +141,6 @@ function Admin() {
 
       <hr className="divider" />
 
-      {/* 선수 명단 및 타순 관리 (DND 적용된 컴포넌트) */}
       <Players 
         game={game}
         allTeams={allTeams}  

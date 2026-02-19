@@ -329,3 +329,44 @@
   cursor: pointer;
   white-space: nowrap;
 }
+/* 선수 셀 내부 레이아웃 */
+.cell-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* 역할 선택 컨테이너 */
+.role-selector {
+  display: flex;
+  gap: 4px;
+  background: #f1f1f1;
+  padding: 2px;
+  border-radius: 6px;
+}
+
+/* 타/투 버튼 공통 스타일 */
+.role-toggle-btn {
+  border: none;
+  background: none;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #888;
+  transition: all 0.2s;
+}
+
+/* 활성화된 버튼 스타일 */
+.role-toggle-btn.active {
+  background: #333;
+  color: #fff;
+}
+
+/* 투수(pitcher)가 활성화되었을 때 강조색을 다르게 하고 싶다면 */
+.role-toggle-btn.active:nth-child(2) {
+  background: #e74c3c; /* 투수는 빨간색 계열 */
+}

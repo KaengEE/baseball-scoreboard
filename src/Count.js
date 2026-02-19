@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import './count.css'
 
 function Count({ game, updateDB, handleUndo }) {
-  // 수동 수정 섹션을 위한 로컬 상태 (필요 시 유지)
+  // 1. 기존 카운트 상태
   const [tempCounts, setTempCounts] = useState({ 
     balls: 0, strikes: 0, outs: 0, inning: 1, isTop: true, awayScore: 0, homeScore: 0 
   });
+
+  // 2. 팀 로고 관리를 위한 로컬 상태 추가
+const logoFiles = [
+    { name: '기아', path: '/logos/kia.png' },
+    { name: '롯데', path: '/logos/lotte.png' },
+    { name: '삼성', path: '/logos/samsung.png' },
+    { name: '두산', path: '/logos/doosan.png' },
+    { name: 'LG', path: '/logos/lg.png' },
+    { name: 'SSG', path: '/logos/ssg.png' },
+    { name: 'NC', path: '/logos/nc.png' },
+    { name: '키움', path: '/logos/kiwoom.png' },
+    { name: 'KT', path: '/logos/kt.png' },
+    { name: '한화', path: '/logos/hanhwa.png' }
+  ];
 
   // DB 데이터 변경 시 로컬 상태 동기화
   useEffect(() => {
@@ -23,27 +38,19 @@ function Count({ game, updateDB, handleUndo }) {
 
   if (!game) return null;
 
-  // --- 1. 실시간 로직 (DB 즉시 반영) ---
-
-  // 점수 및 이닝 실시간 조절 함수
+  // --- 실시간 조절 및 카운트 로직 (기존과 동일) ---
   const handleLiveAdjust = (type, delta) => {
     const currentVal = game[type] || 0;
     const newVal = currentVal + delta;
-
-    // 제한 로직 (점수/이닝 0 또는 1 미만 방지)
     if ((type === 'awayScore' || type === 'homeScore') && newVal < 0) return;
     if (type === 'inning' && newVal < 1) return;
     if (type === 'balls' && (newVal < 0 || newVal > 3)) return;
     if (type === 'strikes' && (newVal < 0 || newVal > 2)) return;
     if (type === 'outs' && (newVal < 0 || newVal > 2)) return;
-
     updateDB({ [type]: newVal });
   };
 
-  // 초/말 실시간 토글
-  const handleLiveToggleTop = () => {
-    updateDB({ isTop: !game.isTop });
-  };
+  const handleLiveToggleTop = () => updateDB({ isTop: !game.isTop });
 
   const handleBall = () => {
     if (game.balls >= 3) {
@@ -56,11 +63,8 @@ function Count({ game, updateDB, handleUndo }) {
   };
 
   const handleStrike = () => {
-    if (game.strikes >= 2) {
-      handleOut();
-    } else {
-      updateDB({ strikes: game.strikes + 1 });
-    }
+    if (game.strikes >= 2) handleOut();
+    else updateDB({ strikes: game.strikes + 1 });
   };
 
   const handleOut = () => {
@@ -77,12 +81,20 @@ function Count({ game, updateDB, handleUndo }) {
     }
   };
 
-  // --- 2. 정밀 수정 반영 로직 (하단 섹션용) ---
+  // 로고 선택
+  const selectLogo = (type, path) => {
+    const fieldName = type === 'away' ? 'awayLogo' : 'homeLogo';
+    updateDB({ [fieldName]: path });
+  };
+
   const adjustTemp = (type, delta) => {
     setTempCounts(prev => {
       let newVal = prev[type] + delta;
+      if (newVal < 0) return prev;
+      if (type === 'balls' && newVal > 3) return prev;
+      if (type === 'strikes' && newVal > 2) return prev;
+      if (type === 'outs' && newVal > 2) return prev;
       if (type === 'inning' && newVal < 1) return prev;
-      if ((type === 'awayScore' || type === 'homeScore') && newVal < 0) return prev;
       return { ...prev, [type]: newVal };
     });
   };
@@ -93,77 +105,103 @@ function Count({ game, updateDB, handleUndo }) {
   };
 
   return (
-    <section className="control-section">
-      {/* 현재 상태 헤더 */}
-      <div className="status-display">
-        <h4>
-          {game.inning}회 {game.isTop ? '초' : '말'} | {game.awayName || "원정"} {game.awayScore} : {game.homeScore} {game.homeName || "홈"}
-        </h4>
-      </div>
-
-      {/* 실시간 점수 조절 (즉시 반영) */}
-      <div className="score-quick-buttons" style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
-        <div className="manual-adjust-box" style={{ flex: 1, backgroundColor: '#f8d7da', border: '1px solid #f5c6cb' }}>
-          <span className="label">{game.awayName || "AWAY"}</span>
-          <button onClick={() => handleLiveAdjust('awayScore', -1)} className="btn-step">-</button>
-          <div className="display-num">{game.awayScore}</div>
-          <button onClick={() => handleLiveAdjust('awayScore', 1)} className="btn-step">+</button>
+    <>
+      <section className="control-section">
+        <div className="status-display">
+          <h4>
+            {game.awayScore} : {game.homeScore} | {game.inning} 회 {game.isTop ? '초' : '말'}
+          </h4>
         </div>
 
-        <div className="manual-adjust-box" style={{ flex: 1, backgroundColor: '#d1ecf1', border: '1px solid #bee5eb' }}>
-          <span className="label">{game.homeName || "HOME"}</span>
-          <button onClick={() => handleLiveAdjust('homeScore', -1)} className="btn-step">-</button>
-          <div className="display-num">{game.homeScore}</div>
-          <button onClick={() => handleLiveAdjust('homeScore', 1)} className="btn-step">+</button>
+        {/* 실시간 점수/이닝 조절 UI (생략 없이 유지) */}
+        <div className="score-quick-buttons" style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
+          <div className="manual-adjust-box" style={{ flex: 1, backgroundColor: '#f8d7da', border: '1px solid #f5c6cb' }}>
+            <button onClick={() => handleLiveAdjust('awayScore', -1)} className="btn-step">-</button>
+            <div className="display-num">{game.awayScore}</div>
+            <button onClick={() => handleLiveAdjust('awayScore', 1)} className="btn-step">+</button>
+          </div>
+          <div className="manual-adjust-box" style={{ flex: 1, backgroundColor: '#d1ecf1', border: '1px solid #bee5eb' }}>
+            <button onClick={() => handleLiveAdjust('homeScore', -1)} className="btn-step">-</button>
+            <div className="display-num">{game.homeScore}</div>
+            <button onClick={() => handleLiveAdjust('homeScore', 1)} className="btn-step">+</button>
+          </div>
         </div>
-      </div>
 
-      {/* 이닝 실시간 조절 */}
-      <div className="inning-adjust-row" style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-        <div className="manual-adjust-box" style={{ flex: 2 }}>
-          <button onClick={() => handleLiveAdjust('inning', -1)} className="btn-step">-</button>
-          <div className="display-num">{game.inning}회</div>
-          <button onClick={() => handleLiveAdjust('inning', 1)} className="btn-step">+</button>
+        <div className="inning-adjust-row" style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+          <div className="manual-adjust-box" style={{ flex: 2 }}>
+            <button onClick={() => handleLiveAdjust('inning', -1)} className="btn-step">-</button>
+            <div className="display-num">{game.inning}회</div>
+            <button onClick={() => handleLiveAdjust('inning', 1)} className="btn-step">+</button>
+          </div>
+          <button 
+            onClick={handleLiveToggleTop} 
+            className={`btn-isTop ${game.isTop ? 'top' : 'bottom'}`}
+            style={{ flex: 1, height: '60px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
+          >
+            {game.isTop ? `초 (원정 공격)` : `말 (홈 공격)`}
+          </button>
         </div>
-        <button 
-          onClick={handleLiveToggleTop} 
-          className={`btn-isTop ${game.isTop ? 'top' : 'bottom'}`}
-          style={{ flex: 1, height: '60px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
-        >
-          {game.isTop ? `초 (${game.awayName || "원정"} 공격)` : `말 (${game.homeName || "홈"} 공격)`}
-        </button>
-      </div>
-      
-      {/* 실시간 카운트 버튼 */}
-      <div className="count-buttons" style={{ marginBottom: '25px' }}>
-        <button onClick={handleBall} className="btn-ball">BALL: {game.balls}</button>
-        <button onClick={handleStrike} className="btn-strike">STRIKE: {game.strikes}</button>
-        <button onClick={handleOut} className="btn-out">OUT: {game.outs}</button>
-      </div>
+        
+        <div className="count-buttons" style={{ marginBottom: '25px' }}>
+          <button onClick={handleBall} className="btn-ball">BALL: {game.balls}</button>
+          <button onClick={handleStrike} className="btn-strike">STRIKE: {game.strikes}</button>
+          <button onClick={handleOut} className="btn-out">OUT: {game.outs}</button>
+        </div>
 
-      <hr className="divider" />
+        <hr className="divider" />
 
-      {/* 하단 정밀 수정 섹션 (선택 사항) */}
-      <div className="manual-section">
-        <h5 className="section-title">⚙️ 하단 일괄 수정 (필요 시 사용)</h5>
-        <div className="count-control-grid">
-          {['balls', 'strikes', 'outs'].map((type) => (
-            <div key={type} className="count-group">
-              <div className="manual-adjust-box">
-                <button onClick={() => adjustTemp(type, -1)} className="btn-step">-</button>
-                <div className="display-num">
-                  {type === 'balls' ? 'B' : type === 'strikes' ? 'S' : 'O'}: {tempCounts[type]}
+        <div className="manual-section">
+          <h5 className="section-title">⚙️ 일괄 수정 (적용하기 클릭 필수)</h5>
+          <div className="count-control-grid">
+            {['balls', 'strikes', 'outs'].map((type) => (
+              <div key={type} className="count-group">
+                <div className="manual-adjust-box">
+                  <button onClick={() => adjustTemp(type, -1)} className="btn-step">-</button>
+                  <div className="display-num">
+                    {type === 'balls' ? 'B' : type === 'strikes' ? 'S' : 'O'}: {tempCounts[type]}
+                  </div>
+                  <button onClick={() => adjustTemp(type, 1)} className="btn-step">+</button>
                 </div>
-                <button onClick={() => adjustTemp(type, 1)} className="btn-step">+</button>
+              </div>
+            ))}
+          </div>
+          <button onClick={handleApplyAll} className="btn-apply-all">적용하기</button>
+        </div>
+      </section>
+
+      {/* 2. ★ 로고 선택 섹션 (3x3 리스트) */}
+      <div className="logo-selection-admin">
+        <div className="logo-selection-container" style={{ display: 'flex', gap: '20px' }}>
+          {['away', 'home'].map((type) => (
+            <div key={type} className="logo-picker-box" style={{ flex: 1 }}>
+              <p style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '13px' }}>
+                {type === 'away' ? '왼쪽 로고' : '오른쪽 로고'}
+              </p>
+              <div className="logo-grid-3x3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px' }}>
+                {logoFiles.map((logo) => (
+                  <button 
+                    key={`${type}-${logo.name}`}
+                    className={`logo-item ${game[`${type}Logo`] === logo.path ? 'selected' : ''}`}
+                    onClick={() => selectLogo(type, logo.path)}
+                    style={{ 
+                      padding: '5px', 
+                      border: game[`${type}Logo`] === logo.path ? '2px solid #007bff' : '1px solid #ddd',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      backgroundColor: game[`${type}Logo`] === logo.path ? '#e7f1ff' : '#fff'
+                    }}
+                  >
+                    <img src={logo.path} alt={logo.name} style={{ width: '30px', height: '30px', objectFit: 'contain' }} />
+                  </button>
+                ))}
               </div>
             </div>
           ))}
         </div>
-        <button onClick={handleApplyAll} className="btn-apply-all">
-          정밀 수정 내용 한 번에 반영하기
-        </button>
       </div>
-    </section>
+    </>
   );
 }
 

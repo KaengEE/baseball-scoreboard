@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Admin from './Admin';
 import Overlay from './Overlay';
 import './App.css';
+import PasswordProtect from './PasswordProtect';
 
 function App() {
   return (
+    <PasswordProtect>
     <Router>
       <div className="App">
         <Routes>
@@ -31,6 +33,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </PasswordProtect>
   );
 }
 

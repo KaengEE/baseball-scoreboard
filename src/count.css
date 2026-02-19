@@ -1,0 +1,97 @@
+/* 로고 선택 전체 컨테이너 */
+.logo-selection-admin {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 25px;
+  border: 1px solid #eee;
+}
+
+/* 홈/원정 박스 레이아웃 */
+.logo-selection-container {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.logo-picker-box {
+  flex: 1;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #eef0f2;
+}
+
+.logo-picker-box p {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #444;
+  border-bottom: 2px solid #007bff;
+  display: inline-block;
+  padding-bottom: 3px;
+}
+
+/* 3x3 그리드 설정 */
+.logo-grid-3x3 {
+  display: grid;
+  gap: 0px;
+}
+
+/* 개별 로고 아이템 버튼 */
+.logo-item {
+  aspect-ratio: 1 / 1; /* 정사각형 유지 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  outline: none;
+  width: 50px;
+  height: 50px;
+}
+
+/* 마우스 호버 효과 */
+.logo-item:hover {
+  border-color: #007bff;
+  background-color: #f0f7ff;
+  transform: translateY(-2px);
+}
+
+/* 선택된 상태 스타일 (강조) */
+.logo-item.selected {
+  border: 2px solid #007bff !important;
+  background-color: #e7f1ff !important;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  position: relative;
+}
+
+/* 선택된 아이콘 체크 표시 (옵션) */
+.logo-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #007bff;
+  color: white;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-item img {
+  max-width: 100%;
+  max-height: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* 반응형 대응 (화면이 작아질 때 세로로 배치) */
+@media (max-width: 600px) {
+  .logo-selection-container {
+    flex-direction: column;
+  }
+}

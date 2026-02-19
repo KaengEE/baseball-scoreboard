@@ -1,156 +1,315 @@
-/* Overlay.css */
-
-/* 전체 스코어보드 컨테이너 */
-.scoreboard-wrapper {
-  display: flex;
-  align-items: center;
-  background-color: #2a2a2a; /* OBS에서 투명하게 하려면 'transparent'로 변경 */
-  color: white;
-  padding: 10px 20px;
-  border: 2px solid #111;
-  width: fit-content;
-  border-radius: 5px;
-  font-family: 'Arial Black', sans-serif;
-  gap: 20px;
+/* 1. 웹폰트 및 전체 설정 (기존 유지) */
+@font-face {
+    font-family: 'Isamanru';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
 }
 
-/* 1. 팀 이름 및 점수 영역 */
-.team-scores {
+* { 
+    font-family: 'Isamanru', sans-serif !important; 
+    box-sizing: border-box; 
+}
+
+.overlay-wrapper {
+  width: 100vw;               /* 브라우저 너비 전체 */
+  height: 100vh;              /* 브라우저 높이 전체 */
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  background-color: transparent;
+}
+
+/* 2. 전체 박스 비율 설정 (6:4 비율) */
+.overlay-canvas {
+  width: 1000px;
+  aspect-ratio: 6 / 4;
+  background-color: transparent;
+  color: white;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  border-right: 2px solid #555;
-  padding-right: 20px;
 }
 
+/* 3. 레이아웃 분할 (이미지 시안 기준) */
+.main-header-scoreboard {
+  flex: 4;
+  display: flex;
+  background-color: #1a1a1a;
+}
+
+.game-play-area {
+  flex: 6;
+  display: flex;
+  background-color: #000;
+}
+
+/* 상단 스코어바 */
+/* 상단 스코어보드 전체 */
+.main-header-scoreboard {
+  display: flex;
+  height: 200px;
+  background-color: #1a1a1a;
+  align-items: stretch; /* 자식 요소들이 높이를 꽉 채우도록 */
+}
+
+/* 중앙 정보 영역: 세로 정렬(Column) */
+.center-info-zone {
+  flex: 1.5; /* 양쪽 팀 영역보다 조금 더 넓게 배분 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+  padding: 10px;
+}
+
+/* 점수 행: 가로 정렬(Row) */
 .score-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  width: 160px;
-  font-size: 22px;
-  letter-spacing: 1px;
+  gap: 25px; /* 점수와 vs 사이 간격 */
+  margin-bottom: 5px;
 }
 
-.score-num {
-  font-size: 26px;
-  color: #fff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+.inning-text {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ccc;
+  margin-bottom: 8px;
 }
 
-/* 2. 주자 다이아몬드 & 이닝 영역 */
-.diamond-container {
+.away-team-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-box img { height: 130px; }
+.score-big { font-size: 100px; font-weight: 700; }
+
+.center-info-zone {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
+.inning-text { font-size: 28px; margin-bottom: 15px; }
+
+.notice-banner {
+  width: 100%;
+  background-color: #2c2c2c;
+  font-size: 14px;
+  text-align: center;
+}
+
+.home-team-zone {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #1a1a1a;
+}
+.home-name-display { font-size: 100px; font-weight: 700; }
+
+/* 하단 영역 */
+.game-play-area {
+  display: flex;
+  height: 500px;
+  background-color: #000;
+}
+
+.lineup-side { flex: 1; }
+.lineup-table { width: 100%; border-collapse: collapse; }
+.lineup-table tr { height: 55px; border-bottom: 1px solid #333; }
+.col-name { padding-left: 25px; font-size: 22px; font-weight: 700; border: 1px solid #333;}
+.col-role { width: 60px; text-align: center; color: #f1c40f; border: 1px solid #333; }
+
+/* 중앙 필드 */
+.field-center-wrap {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+/* 베이스 모양 */
+/* 중앙 필드 컨테이너: BSO 박스를 감쌀 수 있도록 크기를 키웁니다. */
+.diamond-main {
   position: relative;
-  width: 100px;
-  height: 80px;
+  width: 300px;  /* BSO 박스 너비보다 넓게 설정 */
+  height: 300px; /* BSO 박스 높이보다 길게 설정 */
+  /* 부모를 회전시키면 내부 베이스 정렬이 어려우므로 회전은 제거합니다. */
+  transform: none; 
+  margin: 0 auto;  /* 중앙 정렬 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* 베이스 공통 스타일: 개별 베이스만 45도 회전시켜 다이아몬드 모양 유지 */
 .base {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  background-color: #444; /* 주자 없을 때 */
-  transform: rotate(45deg);
-  border: 1px solid #111;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 45px;
+  height: 45px;
+  background-color: #222;
+  border: 2px solid #444;
+  transform: rotate(45deg); /* 다이아몬드 모양 생성 */
+  transition: all 0.3s ease;
 }
 
-/* 주자 있을 때 (디자인 시안의 노란색) */
-.base.active {
-  background-color: #ffff00;
-  box-shadow: 0 0 12px #ffff00;
-  border-color: #ffff00;
+/* 활성화된 베이스 */
+.base.active { 
+  background-color: yellow; 
+  border-color: #fff;
+  box-shadow: 0 0 20px yellow; 
 }
 
-.b2 { top: 0; left: 39px; }
-.b3 { top: 28px; left: 5px; }
-.b1 { top: 28px; left: 73px; }
-
-.inning-info {
-  position: absolute;
-  bottom: -5px;
+/* 2루 (상단 중앙) */
+.b2 { 
+  top: -30px; 
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+  margin-left: -22.5px;
 }
 
-.arrow { font-size: 16px; }
+/* 1루 (우측 중앙) */
+.b1 { 
+  right: -30px; 
+  top: 50%;
+  margin-top: -22.5px;
+}
 
-/* 3. BSO 카운트 영역 */
-.bso-container {
+/* 3루 (좌측 중앙) */
+.b3 { 
+  left: -30px; 
+  top: 50%;
+  margin-top: -22.5px;
+}
+
+/* 스코어보드 박스 */
+.bso-box-vertical {
+  padding-top: 150px;
+}
+
+.bso-line { display: flex; align-items: center; margin: 5px 0; }
+.bso-label { width: 30px; font-size: 24px; font-weight: 700; }
+.dot { width: 20px; height: 20px; border-radius: 50%; background-color: #222; margin-left: 10px; }
+.ball.active { background-color: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
+.strike.active { background-color: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
+.out.active { background-color: #e74c3c; box-shadow: 0 0 10px #e74c3c; }
+
+
+/* 현재 타자 행 강조 */
+/* .current-batter-row {
+  background-color: rgba(241, 196, 15, 0.3);
+}
+
+.current-batter-row .col-name {
+  font-weight: bold;
+} */
+
+/* 맨 아래 고정 투수 행 */
+.pitcher-fixed-row {
+  border-top: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(52, 152, 219, 0.2); /* 파란색 반투명 */
+}
+
+.pitcher-fixed-row .col-role {
+  color: #3498db;
+  font-weight: bold;
+}
+
+/* 1. 하단 영역 (game-play-area) 높이 확보 */
+.game-play-area {
+  display: flex;
+  flex: 6.5; /* 상단보다 조금 더 비중을 높여 아래쪽 공간 확보 */
+  background-color: #000;
+  overflow: hidden; /* 영역 밖으로 나가는 것 방지 */
+}
+
+/* 2. 라인업 사이드 컨테이너 */
+.lineup-side {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  border-left: 2px solid #555;
-  padding-left: 20px;
 }
 
-.count-row {
-  display: flex;
-  align-items: center;
-}
-
-.label {
-  width: 20px;
-  font-size: 22px;
-  font-weight: 900;
-  margin-right: 10px;
-}
-
-.dot {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background-color: #333; /* 꺼진 상태 */
-  margin: 0 3px;
-  border: 1px solid #111;
-}
-
-/* 형광색 활성화 효과 */
-.ball.active { background-color: #39ff14; box-shadow: 0 0 10px #39ff14; }
-.strike.active { background-color: #f3f315; box-shadow: 0 0 10px #f3f315; }
-.out.active { background-color: #ff0000; box-shadow: 0 0 10px #ff0000; }
-
-
-/* 로고 */
-.team-info-box {
-  display: flex;
-  align-items: center;  /* 세로 중앙 정렬 */
-  gap: 6px;             /* 로고와 이름 사이 간격 */
-  flex: 1;              /* 공간을 꽉 채우도록 설정 */
-}
-.score-logo {
-  width: 20px;          /* 로고 너비 축소 */
-  height: 20px;         /* 로고 높이 축소 */
-  object-fit: contain;  /* 이미지 비율 유지 */
-  display: block;       /* 여백 방지 */
-}
-
-/* 팀 이름 텍스트 */
-.team-name-text {
-  font-size: 16px;      /* 필요에 따라 조절 */
-  font-weight: bold;
-  color: #ffffff;
-  white-space: nowrap;  /* 이름이 길어도 줄바꿈 방지 */
-}
-
-/* 스코어보드 각 줄(Row) 설정 */
-.score-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* 팀 정보는 왼쪽, 점수는 오른쪽 */
-  padding: 4px 10px;
+/* 3. 테이블 구조 수정 */
+.lineup-table {
   width: 100%;
+  height: 100%; /* 부모 높이에 꽉 채우기 */
+  border-collapse: collapse;
+  table-layout: fixed; /* 행 높이를 균등하게 배분하기 위함 */
 }
 
-/* 점수 숫자 */
-.score-num {
-  font-size: 22px;
-  font-weight: 800;
-  color: #ffffff;
-  min-width: 30px;
+/* 4. 각 행(tr)의 높이를 고정값 대신 비율(%)로 설정 */
+.lineup-table tr {
+  height: 10%; /* 총 10개 행(9타자 + 1투수)이므로 각각 10%씩 차지 */
+  border-bottom: 1px solid #333;
+}
+
+.pitcher-fixed-row td {
+  font-weight: bold;
+}
+
+/* 6. 셀 내부 텍스트 세로 중앙 정렬 */
+.lineup-table td {
+  vertical-align: middle;
+  padding: 0 10px;
+}
+
+.col-name {
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-left: 1px solid transparent !important;
+}
+
+.col-role {
+  width: 50px; /* 너비 최적화 */
+  text-align: center;
+  color: #f1c40f;
+  border: 1px solid #333;
+  font-size: 18px;
+}
+
+.batter-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.batter-icon-svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* 번호셀 */
+.col-num {
+width: 35px;
   text-align: right;
+  padding-right: 5px;
+  color: #fff;
+  border: 1px solid #333;
+  font-size: 18px;
+  border-right: 1px solid transparent !important;
+}
+
+/* 투수 */
+.p-label{
+  padding: 10px;
+  color: #fff;
+  font-size: 20px;
+  border-right: 1px solid transparent !important;
 }
