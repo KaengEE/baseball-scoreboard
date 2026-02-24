@@ -1,32 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { db } from './firebase-config';
+import React, { useState, useEffect } from "react";
+import { db } from "./firebase-config";
 import { doc, getDoc } from "firebase/firestore";
-import './PasswordProtect.css';
+import "./PasswordProtect.css";
 
 function PasswordProtect({ children }) {
-  const [isAuth, setIsAuth] = useState(sessionStorage.getItem("site_auth") === "true");
+  const [isAuth, setIsAuth] = useState(
+    sessionStorage.getItem("site_auth") === "true",
+  );
   const [inputPw, setInputPw] = useState("");
-  const [masterPw, setMasterPw] = useState(""); 
+  const [masterPw, setMasterPw] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
-  const fetchPassword = async () => {
-    try {
-      const docRef = doc(db, "setting", "admin");
-      const docSnap = await getDoc(docRef);
-      
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        setMasterPw(data.adminPassword); 
+  useEffect(() => {
+    const fetchPassword = async () => {
+      try {
+        const docRef = doc(db, "setting", "admin");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setMasterPw(data.adminPassword);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  fetchPassword();
-}, []);
+    };
+    fetchPassword();
+  }, []);
 
   const handleLogin = () => {
     // 타입 일치
@@ -39,7 +41,8 @@ useEffect(() => {
     }
   };
 
-  if (isLoading) return <div className="loading">보안 설정을 불러오는 중...</div>;
+  if (isLoading)
+    return <div className="loading">보안 설정을 불러오는 중...</div>;
 
   if (!isAuth) {
     return (
@@ -47,11 +50,11 @@ useEffect(() => {
         <div className="login-card">
           <h2>🔐 접근 제한</h2>
           <p>이 사이트를 이용하려면 비밀번호가 필요합니다.</p>
-          <input 
-            type="password" 
+          <input
+            type="password"
             value={inputPw}
             onChange={(e) => setInputPw(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+            onKeyPress={(e) => e.key === "Enter" && handleLogin()}
             placeholder="비밀번호 입력"
             autoFocus
           />
