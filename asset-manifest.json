@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/baseball-scoreboard/static/css/main.db278b31.css",
-    "main.js": "/baseball-scoreboard/static/js/main.7e72044f.js",
+    "main.css": "/baseball-scoreboard/static/css/main.192796f6.css",
+    "main.js": "/baseball-scoreboard/static/js/main.3f2fd208.js",
     "index.html": "/baseball-scoreboard/index.html",
-    "main.db278b31.css.map": "/baseball-scoreboard/static/css/main.db278b31.css.map",
-    "main.7e72044f.js.map": "/baseball-scoreboard/static/js/main.7e72044f.js.map"
+    "main.192796f6.css.map": "/baseball-scoreboard/static/css/main.192796f6.css.map",
+    "main.3f2fd208.js.map": "/baseball-scoreboard/static/js/main.3f2fd208.js.map"
   },
   "entrypoints": [
-    "static/css/main.db278b31.css",
-    "static/js/main.7e72044f.js"
+    "static/css/main.192796f6.css",
+    "static/js/main.3f2fd208.js"
   ]
 }
