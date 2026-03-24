@@ -137,10 +137,11 @@ function Count({ game, updateDB, handleUndo }) {
     });
   };
 
-  const handleApplyAll = () => {
-    updateDB(tempCounts);
-    alert("모든 수정 내용이 적용되었습니다.");
-  };
+  // 팝업삭제요청
+  // const handleApplyAll = () => {
+  //   updateDB(tempCounts);
+  //   alert("모든 수정 내용이 적용되었습니다.");
+  // };
 
   return (
     <>
@@ -278,9 +279,8 @@ function Count({ game, updateDB, handleUndo }) {
               </div>
             ))}
           </div>
-          <button onClick={handleApplyAll} className="btn-apply-all">
-            적용하기
-          </button>
+          {/* onClick={handleApplyAll} 삭제*/}
+          <button className="btn-apply-all">적용하기</button>
         </div>
       </section>
 

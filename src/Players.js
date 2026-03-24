@@ -14,6 +14,7 @@ import {
   verticalListSortingStrategy,
   useSortable,
 } from "@dnd-kit/sortable";
+
 import { CSS } from "@dnd-kit/utilities";
 import "./Players.css";
 
@@ -36,6 +37,37 @@ function SortablePlayerRow({
     isDragging,
   } = useSortable({ id });
 
+  // 라디오버튼 추가요청(책갈피)
+  // 1. 로컬 스토리지에서 상태 불러오기 (1시간 유효성 체크)
+  const [isBookmarked, setIsBookmarked] = useState(() => {
+    const saved = localStorage.getItem(`bookmark_${id}`);
+    if (!saved) return false;
+
+    const { value, expiry } = JSON.parse(saved);
+    if (new Date().getTime() > expiry) {
+      localStorage.removeItem(`bookmark_${id}`);
+      return false;
+    }
+    return value;
+  });
+
+  // 2. 체크박스 변경 핸들러 (1시간 유지 설정)
+  const handleBookmarkChange = () => {
+    const newValue = !isBookmarked;
+    setIsBookmarked(newValue);
+
+    if (newValue) {
+      const now = new Date();
+      const item = {
+        value: true,
+        expiry: now.getTime() + 60 * 60 * 1000, // 현재 시간 + 1시간
+      };
+      localStorage.setItem(`bookmark_${id}`, JSON.stringify(item));
+    } else {
+      localStorage.removeItem(`bookmark_${id}`);
+    }
+  };
+
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -48,7 +80,7 @@ function SortablePlayerRow({
     <div
       ref={setNodeRef}
       style={style}
-      className={`player-cell ${isDragging ? "dragging" : ""}`}
+      className={`player-cell ${isDragging ? "dragging" : ""} ${isBookmarked ? "bookmarked" : ""}`}
       {...attributes}
       {...listeners}
     >
@@ -60,7 +92,8 @@ function SortablePlayerRow({
           {playerObj.name}
         </span>
 
-        <div
+        {/* ver1. 라디오 */}
+        {/* <div
           className="role-radio-group"
           onPointerDown={(e) => e.stopPropagation()}
         >
@@ -86,6 +119,41 @@ function SortablePlayerRow({
             />{" "}
             타자
           </label>
+        </div> */}
+        {/* ver2. 버튼 */}
+        <div
+          className="role-button-group"
+          onPointerDown={(e) => e.stopPropagation()}
+        >
+          {/* 책갈피 버튼 */}
+          <div
+            className="bookmark-wrapper"
+            onPointerDown={(e) => e.stopPropagation()}
+          >
+            <label className="bookmark-label">
+              <input
+                type="checkbox"
+                className="bookmark-check"
+                checked={isBookmarked}
+                onChange={handleBookmarkChange}
+              />
+            </label>
+          </div>
+          {/* 기능 버튼 */}
+          <button
+            type="button"
+            className={`role-btn ${isCurrentPitcher ? "active-p" : ""}`}
+            onClick={() => onRoleChange("pitcher", id)}
+          >
+            투수
+          </button>
+          <button
+            type="button"
+            className={`role-btn ${isCurrentBatter ? "active-b" : ""}`}
+            onClick={() => onRoleChange("batter", id)}
+          >
+            타자
+          </button>
         </div>
       </div>
       <button

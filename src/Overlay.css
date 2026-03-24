@@ -193,8 +193,8 @@
   position: absolute;
   width: 45px;
   height: 45px;
-  background-color: #737373;
-  border: 6px solid #cdcdcd;
+  background-color: #000;
+  border: 6px solid #fff;
   transform: rotate(45deg);
   transition: all 0.3s ease;
 }
